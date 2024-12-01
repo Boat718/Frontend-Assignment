@@ -1,0 +1,29 @@
+[
+  { "id": 1,
+    " account": "00000001", 
+    "operation": "Buy", 
+    "symbol": "NA", 
+    "description": "NATIONAL BANK OF CDA", 
+    "qty": 50000, 
+    "filledQty": 0, 
+    "price": 526.00,
+    "status": "Waiting", 
+    "date": "2022/12/08 05:12:36",
+    "expiration": "2022/12/08 05:12:36",
+    "noRef": "13830581", 
+    "extRef": "2-XXXXXXX1-1" ,
+    "period":"Tranmission",
+    "data":{
+        "firstName": "10103ZA",
+        "lastName": "US Margin",
+        "netAmount": 1152.95,
+        "price": 135.00,
+        "exchangeRate": 1.3357,
+        "osLimit":140.0,
+        "referenceNumber": "12344567890",
+        "dateTime": "2022/12/08 05:12",
+        "telephone": "000-000-000",
+        "userId":"123442321"
+    }
+  }
+]
