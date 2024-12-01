@@ -1,0 +1,49 @@
+[
+  {
+    "id": 1,
+    "account": "00000001",
+    "operation": "Buy",
+    "symbol": "NA",
+    "description": "NATIONAL BANK OF CDA",
+    "qty": 500,
+    "filledQty": 0,
+    "price": 526.0,
+    "status": "Waiting",
+    "date": "2024/12/08 05:12:36",
+    "expiration": "2024/12/20 05:12:36",
+    "noRef": "13830581",
+    "extRef": "2-XXXXXXX1-1",
+    "period": "Transmission"
+  },
+  {
+    "id": 2,
+    "account": "00000002",
+    "operation": "Sell",
+    "symbol": "EURO",
+    "description": "NATIONAL BANK OF CDA",
+    "qty": 50000,
+    "filledQty": 0,
+    "price": 526.0,
+    "status": "Complete",
+    "date": "2024/12/08 05:12:36",
+    "expiration": "2024/12/08 05:12:36",
+    "noRef": "13830581",
+    "extRef": "2-XXXXXXX1-1",
+    "period": "Transmission"
+  },
+  {
+    "id": 3,
+    "account": "00000003",
+    "operation": "Buy",
+    "symbol": "USD",
+    "description": "NATIONAL BANK OF CDA",
+    "qty": 5000000,
+    "filledQty": 0,
+    "price": 526.0,
+    "status": "Waiting",
+    "date": "2024/12/08 05:12:36",
+    "expiration": "2024/12/08 05:12:36",
+    "noRef": "13830581",
+    "extRef": "2-XXXXXXX1-1"
+  }
+]

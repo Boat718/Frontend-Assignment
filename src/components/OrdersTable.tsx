@@ -1,25 +1,15 @@
-import { Box, Button, Collapse, IconButton, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TableSortLabel, Typography } from "@mui/material";
+import { Box, IconButton, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TableSortLabel,useMediaQuery, useTheme } from "@mui/material";
 import { FunctionComponent, useState } from "react";
-import UnfoldMoreIcon from '@mui/icons-material/UnfoldMore';
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import PendingSharpIcon from '@mui/icons-material/PendingSharp';
 import ScheduleSharpIcon from '@mui/icons-material/ScheduleSharp';
 import React from "react";
 import ExpandDetail from './ExpandDetail';
+import getCellStyle from "../css/cellStyles";
 
 interface OrdersTableProps {
   
-}
-
-
-
-export function SortedDescendingIcon() {
-  return (
-    <div>
-      <UnfoldMoreIcon className="icon" />
-    </div>
-  );
 }
 
 const OrdersTable: FunctionComponent = () => {
@@ -32,6 +22,9 @@ const OrdersTable: FunctionComponent = () => {
       prev.includes(id) ? prev.filter((rowId) => rowId !== id) : [...prev, id]
     );
   };
+
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
   const rows = [
     {
@@ -109,115 +102,48 @@ const OrdersTable: FunctionComponent = () => {
 
   const sortedRows = sortData(rows, comparator);
 
+  const visibleColumns = isMobile
+    ? ["account", "operation", "symbol", "status"]
+    : [
+        "account",
+        "operation",
+        "symbol",
+        "description",
+        "qty",
+        "filledQty",
+        "price",
+        "status",
+        "date",
+        "expiration",
+        "noRef",
+        "extRef",
+      ];
+
   return (
     <TableContainer component={Box}  sx={{ border:"none" }}>
       <Table sx={{ minWidth: 650, border:"none" } }>
         <TableHead>
           <TableRow>
             <TableCell sx={{width:"0%"}} />
-            <TableCell >
-              <TableSortLabel
-                active={orderBy === "account"}
-                direction={orderBy === "account" ? order : "asc"}
-                onClick={() => handleRequestSort("account")}
-                >Account 
-              </TableSortLabel>
-            </TableCell>
-            <TableCell align="center">
-              <TableSortLabel
-                active={orderBy === "operation"}
-                direction={orderBy === "operation" ? order : "asc"}
-                onClick={() => handleRequestSort("operation")}
-                >Operation
-              </TableSortLabel>
-            </TableCell>
-            <TableCell align="center">
-              <TableSortLabel
-                active={orderBy === "symbol"}
-                direction={orderBy === "symbol" ? order : "asc"}
-                onClick={() => handleRequestSort("symbol")}
-                >Symbol
-              </TableSortLabel>
-            </TableCell>
-            <TableCell>
-              <TableSortLabel
-                active={orderBy === "description"}
-                direction={orderBy === "description" ? order : "asc"}
-                onClick={() => handleRequestSort("description")}
-                >Description
-              </TableSortLabel>
-            </TableCell>
-            <TableCell align="center">
-              <TableSortLabel
-                active={orderBy === "qty"}
-                direction={orderBy === "qty" ? order : "asc"}
-                onClick={() => handleRequestSort("qty")}
-                >Qty.
-              </TableSortLabel>
-            </TableCell>
-            <TableCell align="center">
-              <TableSortLabel
-                active={orderBy === "filledQty"}
-                direction={orderBy === "filledQty" ? order : "asc"}
-                onClick={() => handleRequestSort("filledQty")}
-                >FilledQty
-              </TableSortLabel>
-            </TableCell>
-            <TableCell>
-              <TableSortLabel
-                active={orderBy === "price"}
-                direction={orderBy === "price" ? order : "asc"}
-                onClick={() => handleRequestSort("price")}
-                >Price
-              </TableSortLabel>
-            </TableCell>
-            <TableCell> <TableSortLabel
-                active={orderBy === "status"}
-                direction={orderBy === "status" ? order : "asc"}
-                onClick={() => handleRequestSort("status")}
-              >
-                Status
-              </TableSortLabel>
-            </TableCell>
-            <TableCell>
-              <TableSortLabel
-                active={orderBy === "date"}
-                direction={orderBy === "date" ? order : "asc"}
-                onClick={() => handleRequestSort("date")}
-                >Date
-              </TableSortLabel>
-            </TableCell>
-            <TableCell>
-              <TableSortLabel
-                active={orderBy === "expiration"}
-                direction={orderBy === "expiration" ? order : "asc"}
-                onClick={() => handleRequestSort("expiration")}
-                >Expiration
-              </TableSortLabel>
-            </TableCell>
-            <TableCell>
-              <TableSortLabel
-                active={orderBy === "noRef"}
-                direction={orderBy === "noRef" ? order : "asc"}
-                onClick={() => handleRequestSort("noRef")}
-                >No. Ref.
-              </TableSortLabel>
-            </TableCell>
-            <TableCell>
-              <TableSortLabel
-                active={orderBy === "extRef"}
-                direction={orderBy === "extRef" ? order : "asc"}
-                onClick={() => handleRequestSort("extRef")}
-                >Ext. Ref.
+            
+            {visibleColumns.map((column) => (
+              <TableCell key={column} align={column === "status" ? "center" : "left"}>
+                <TableSortLabel
+                  active={orderBy === column}
+                  direction={orderBy === column ? order : "asc"}
+                  onClick={() => handleRequestSort(column)}
+                  sx={{color:"#336890", fontSize:"15px"}}
+                >
+                  {column.charAt(0).toUpperCase() + column.slice(1)}
                 </TableSortLabel>
-              </TableCell>
+                </TableCell>))}
+                
             <TableCell />
           </TableRow>
         </TableHead>
         <TableBody>
           {sortedRows.map((row) => (
             <React.Fragment key={row.id}>
-              {/* Main Row */}
               <TableRow>
                 <TableCell>
                   <IconButton onClick={() => toggleRowExpansion(row.id)}>
@@ -228,27 +154,32 @@ const OrdersTable: FunctionComponent = () => {
                     )}
                   </IconButton>
                 </TableCell>
-                <TableCell align="center" sx={{color:"#4c92fd", fontWeight:"600", fontSize:"17px"}}>{row.account}</TableCell>
-                <TableCell align="center" sx={{color:"#002644", fontWeight:"500", fontSize:"17px"}}>{row.operation}</TableCell>
-                <TableCell align="center" sx={{color:"#002644", fontWeight:"600", fontSize:"17px"}}>{row.symbol}</TableCell>
-                <TableCell sx={{color:"#002644", fontWeight:"500", fontSize:"17px"}}>{row.description}</TableCell>
-                <TableCell align="center" sx={{color:"#002644", fontWeight:"500", fontSize:"17px"}}>{row.qty}</TableCell>
-                <TableCell align="center" sx={{color:"#002644", fontWeight:"500", fontSize:"17px"}}>{row.filledQty}</TableCell>
-                <TableCell sx={{color:"#002644", fontWeight:"500", fontSize:"17px"}}>{row.price}</TableCell>
-                <TableCell  align="center" >
-                  <Box sx={{ color:"#002644", textAlign: "center", display: "flex", alignItems: "center", fontWeight:"500", fontSize:"17px"}}>
-                  <ScheduleSharpIcon sx={{color:"#4c92fd"}}/>
-                  {row.status}
-                  </Box>
-                </TableCell>
-                <TableCell sx={{color:"#636a76", fontWeight:"600", fontSize:"17px"}}>{row.date}</TableCell>
-                <TableCell sx={{color:"#636a76", fontWeight:"600", fontSize:"17px"}}>{row.expiration}</TableCell>
-                <TableCell sx={{color:"#002644", fontWeight:"600", fontSize:"17px"}}>{row.noRef}</TableCell>
-                <TableCell sx={{color:"#636a76", fontWeight:"600", fontSize:"17px"}}>{row.extRef}</TableCell>
+                {visibleColumns.map((column) => (
+                  <TableCell
+                    key={column}
+                    align={column === "status" ? "center" : "left"}
+                    sx={getCellStyle(column, isMobile)}
+                  >
+                    {column === "status" ? (
+                      <Box
+                        sx={{
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          gap: "4px",
+                        }}
+                      >
+                        <ScheduleSharpIcon sx={{ color: "#4c92fd" }} />
+                        {row[column]}
+                      </Box>
+                    ) : (
+                      row[column]
+                    )}
+                  </TableCell>
+                ))}
                 <TableCell><PendingSharpIcon sx={{color:"rgb(110 186 216 / 87%)"}} /></TableCell>
               </TableRow>
-              {/* Expanded Row */}
-              {expandedRows.includes(row.id) && (
+              {expandedRows.includes(row.id) &&!isMobile && (
                 <TableRow>
                   <TableCell colSpan={14} sx={{paddingTop: 0}}>
                     <ExpandDetail/>

@@ -1,81 +1,88 @@
-import { FunctionComponent, useRef, useState } from "react";
-import { TextField, Button, Box, Typography, MenuItem, colors, TextFieldProps, InputLabel, Select, SelectChangeEvent } from "@mui/material";
-import { CalendarIcon, DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
+import { FunctionComponent,useState } from "react";
+import { Button, Box, Typography, MenuItem, colors, TextFieldProps, InputLabel, Select, SelectChangeEvent } from "@mui/material";
+import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import CalendarMonthOutlinedIcon from '@mui/icons-material/CalendarMonthOutlined';
-import { Dayjs } from "dayjs";
+import dayjs, { Dayjs } from "dayjs";
+import sharedTextFieldProps from "../css/sharedTextFieldProps";
+
 interface SearchBarProps {
-  
+  isMobile?: boolean;
+  setSearchData : any;
 }
 
-const currencies = [
-  {
-    value: 'USD',
-    label: '$',
-  },
-  {
-    value: 'EUR',
-    label: '€',
-  },
-  {
-    value: 'BTC',
-    label: '฿',
-  },
-  {
-    value: 'JPY',
-    label: '¥',
-  },
-];
  
-const SearchBar: FunctionComponent<SearchBarProps> = () => {
+const SearchBar: FunctionComponent<SearchBarProps> = ({ isMobile, setSearchData   }) => {
   const [startDate, setStartDate] = useState<Dayjs | null>(null);
   const [endDate, setEndDate] = useState<Dayjs | null>(null);
-  const [status, setStatus] = useState<string | null>("waiting");
-  const [period, setPeriod] = useState<string | null>("transmission");
+  const [status, setStatus] = useState<string | null>("Waiting");
+  const [period, setPeriod] = useState<string | null>("Transmission");
+  const [mockData, setMockData] = useState<any[]>([]);
 
   const isEndDateDisabled = (date: Dayjs) => {
     if (!startDate) return false;
     return date.isBefore(startDate, "day"); // Disable dates before or same as start date
   };
 
-  const handleSearch = () => {
-    console.log("Searching from:", startDate?.format('DD/MM/YYYY'), "to:", endDate?.format('DD/MM/YYYY'));
-    console.log("Status from:", status, "to:", period);
-  };
-  
-  const sharedTextFieldProps: Partial<TextFieldProps>  = {
-    size: "small",
-    sx: {
-      width: "200px", height: "40px", borderRadius: "8px", borderColor:"#bfbfbf", color:"#14415b",
-      "& .MuiOutlinedInput-root": {
-        "& fieldset": {
-          borderRadius:"8px",
-          borderColor: "none", // Default border color
-        },
-        "&:hover fieldset": {
-          borderColor: "none", // Prevent hover effect
-        },
-        "&.Mui-focused fieldset": {
-          borderColor: "none", // Prevent focus effect
-        },
-      },
-      "& .MuiInputBase-root.Mui-focused": {
-        "& .MuiOutlinedInput-notchedOutline": {
-          borderColor: "none", // Prevent focus outline color change
-        },
-      },
-      "& .MuiInputBase-input": {
-          color: "#14415b"},
-    }
+  const filterData = (data: any[]) => {
+    return data.filter((record) => {
+      let isValid = true;
+      if(status !== record.status) {
+        isValid = false;
+      }
+
+      if(period !== record.period) {
+        isValid = false;
+      }
+
+      if(!endDate || !startDate) {
+        isValid = false;
+      }
+
+      if (endDate && record.expiration && dayjs(record.expiration).isAfter(endDate, "day")) {
+        isValid = false;
+      }
+      if (startDate && record.date && dayjs(record.date).isBefore(startDate, "day")) {
+        isValid = false;
+      }
+
+      return isValid;
+    })
+  }
+
+  const isFormValid = () => {
+    return startDate && endDate && status && period;
   };
 
+  const handleSearch = async () => {
+    // Fetch mock data when search is triggered
+    const response = await fetch("/mockData.json");
+    const data = await response.json();
+    
+    const filteredData = filterData(data);
+    setMockData(filteredData);
+    setSearchData(filteredData);
+    console.log("Search parameters:", {
+      from: startDate?.format("DD/MM/YYYY"),
+      to: endDate?.format("DD/MM/YYYY"),
+      status,
+      period,
+    });
+
+    console.log("Fetched mock data:", filteredData); // Log the fetched data for debugging
+  };
+  
+
+
+  
+  
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <Box
         component="form"
         noValidate
         autoComplete="off"
-        sx={{ display: "flex", gap: "1rem", alignItems: "center", color:"#336890" }}
+        sx={{ display: "flex", gap: "1rem", alignItems: "center", color:"#336890", flexWrap: isMobile ? "wrap" : "nowrap", flexDirection: isMobile ? "column" : "none"}}
       >
         <Typography variant="subtitle2">Period</Typography>
         <Select
@@ -86,9 +93,9 @@ const SearchBar: FunctionComponent<SearchBarProps> = () => {
             onChange={(event: SelectChangeEvent<string>) => setPeriod(event.target.value)}
             sx={sharedTextFieldProps.sx}
           >
-            <MenuItem value={"transmission"}>Transmission</MenuItem>
-            <MenuItem value={"delivery"}>Delivery</MenuItem>
-            <MenuItem value={"payment"}>Payment</MenuItem>
+            <MenuItem value={"Transmission"}>Transmission</MenuItem>
+            <MenuItem value={"Delivery"}>Delivery</MenuItem>
+            <MenuItem value={"Payment"}>Payment</MenuItem>
         </Select>
 
         <Typography variant="subtitle2" >Status</Typography>
@@ -101,9 +108,9 @@ const SearchBar: FunctionComponent<SearchBarProps> = () => {
             onChange={(event: SelectChangeEvent<string>) => setStatus(event.target.value)}
             sx={sharedTextFieldProps.sx}
           >
-            <MenuItem value={"waiting"}>Waiting</MenuItem>
-            <MenuItem value={"complete"}>Complete</MenuItem>
-            <MenuItem value={"inProgress"}>In Progress</MenuItem>
+            <MenuItem value={"Waiting"}>Waiting</MenuItem>
+            <MenuItem value={"Complete"}>Complete</MenuItem>
+            <MenuItem value={"InProgress"}>In Progress</MenuItem>
 
         </Select>
 
@@ -145,6 +152,7 @@ const SearchBar: FunctionComponent<SearchBarProps> = () => {
         <Button
           variant="contained"
           onClick={handleSearch}
+          disabled={!isFormValid()}
           sx={{ borderRadius: "20px", width: "120px", textTransform: "none", background:"#1771c5" }}
         >
           Search
