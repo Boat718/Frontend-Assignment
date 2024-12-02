@@ -1,6 +1,7 @@
-const getCellStyle = (column: string, isMobile: boolean) => {
+const getCellStyle = (column: string, isMobile: boolean, toggle: boolean) => {
   const baseStyle = {
     fontSize: isMobile ? "13px" : "16px",
+    border: toggle? "none":""
   };
 
   switch (column) {

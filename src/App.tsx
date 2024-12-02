@@ -2,14 +2,17 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Layout from './components/layout/Layout';
 import OrdersPage from './pages/OrdersPage';
+import { HeaderProvider } from './context/HeaderContext';
 
-const App = () => (
+const App:React.FC = () => (
   <Router>
-    <Layout>
-      <Routes>
-        <Route path="/" element={<OrdersPage />} />
-      </Routes>
-    </Layout>
+    <HeaderProvider>
+      <Layout>
+        <Routes>
+          <Route path="/" element={<OrdersPage />} />
+        </Routes>
+      </Layout>
+    </HeaderProvider>
   </Router>
 );
 

@@ -1,17 +1,16 @@
 import { FunctionComponent,useState } from "react";
 import { Typography, Box, useTheme, useMediaQuery } from "@mui/material";
 import SearchBar from "../SearchBar";
-
-interface HeaderProps {
-  
-}
+import { useHeaderContext } from "../../context/HeaderContext";
+import { MockData } from "../../types/mockData";
  
 const Header: FunctionComponent = () => {
-  const [searchData, setSearchData] = useState<any>(null); // State to hold data from SearchBar
+  const [searchData, setSearchData] = useState<any>(null);
+  const { setHeaderData } = useHeaderContext();
 
-  const handleSearchData = (data: any) => {
-    setSearchData(data); // Update the state with the data passed from SearchBar
-    console.log("Received data from SearchBar:", data); // Log the data for debugging
+  const handleSearchData = (data: MockData[]) => {
+    setSearchData(data);
+    setHeaderData(data) 
   };
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm")); 

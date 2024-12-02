@@ -2,17 +2,20 @@ import { Box, Button, Typography } from "@mui/material";
 import { FunctionComponent } from "react";
 import KeyboardArrowDownSharpIcon from '@mui/icons-material/KeyboardArrowDownSharp';
 import LaunchSharpIcon from '@mui/icons-material/LaunchSharp';
+import { MockData } from "../types/mockData";
+
 interface ExpandDetailProps {
-  
+  row: MockData;
+  isMobile: boolean;
 }
  
-const ExpandDetail: FunctionComponent<ExpandDetailProps> = () => {
-
+const ExpandDetail: FunctionComponent<ExpandDetailProps> = ({row, isMobile}) => {
+  const { data } = row;
   return ( 
   <Box sx={{ padding: 2, backgroundColor: "#f9fdfe", borderRadius:"5px" }}>
     <Box sx={{display:"flex", justifyContent:"space-between", alignItems:"center", borderBottom:"3px solid #eff0f0"}}>
-      <Box sx={{display:"flex", marginBottom:"10px"}}>
-        <Typography sx={{color:"#2a82fd", fontWeight:"600"}}>FIRSTNAME LASTNAME (10130ZA - US Margin)</Typography>
+      <Box sx={{display:"flex", marginBottom:"10px", flexDirection: isMobile? "column":"" , gap:"5px"}}>
+        <Typography sx={{color:"#2a82fd", fontWeight:"600"}}>FIRSTNAME LASTNAME ({data.firstName +" - "+ data.lastName})</Typography>
         <Button
           sx={{ borderRadius: "20px", width: "200px", textTransform: "none", background:"ffff", border:"0.5px solid black", color:"#1c74c6", marginLeft:"20px" }}
         >
@@ -20,7 +23,7 @@ const ExpandDetail: FunctionComponent<ExpandDetailProps> = () => {
           <LaunchSharpIcon />
         </Button>
       </Box>
-      <Box>
+      <Box sx={{display:"flex", flexDirection: isMobile ? "column":"row", gap:"5px" }}>
         <Button
           variant="contained"
           sx={{ borderRadius: "20px", width: "120px", textTransform: "none", background:"#1771c5", marginRight:"25px" }}
@@ -38,49 +41,52 @@ const ExpandDetail: FunctionComponent<ExpandDetailProps> = () => {
     <Box
       sx={{
         display: "grid",
-        gridTemplateColumns: "repeat(4, 1fr)", // Creates 4 equal columns
-        gap: "16px", // Adds space between the columns and rows
+        gridTemplateColumns: "repeat(4, 1fr)",
+        gap: "16px",
         marginTop: "10px",
+        "@media (max-width: 600px)": {
+          gridTemplateColumns: "1fr 1fr",
+        },
       }}
     >
       <Box>
         <Typography>
-          Net Amount: <span style={{ fontWeight: "600" }}>1152.95 USD</span>
+          Net Amount: <span style={{ fontWeight: "600" }}>{data.netAmount}</span>
         </Typography>
       </Box>
       <Box>
         <Typography>
-          Price: <span style={{ fontWeight: "600" }}>135.00</span>
+          Price: <span style={{ fontWeight: "600" }}>{data.price}</span>
         </Typography>
       </Box>
       <Box>
         <Typography>
-          Exchange Rate: <span style={{ fontWeight: "600" }}>1.3357</span>
+          Exchange Rate: <span style={{ fontWeight: "600" }}>{data.exchangeRate}</span>
         </Typography>
       </Box>
       <Box>
         <Typography>
-          O/S Limit: <span style={{ fontWeight: "600" }}>140.0</span>
+          O/S Limit: <span style={{ fontWeight: "600" }}>{data.osLimit}</span>
         </Typography>
       </Box>
       <Box>
         <Typography>
-          Reference Number: <span style={{ fontWeight: "600" }}>1234567890</span>
+          Reference Number: <span style={{ fontWeight: "600" }}>{data.referenceNumber}</span>
         </Typography>
       </Box>
       <Box>
         <Typography>
-          Date/Time: <span style={{ fontWeight: "600" }}>2023/01/04 03:05:43</span>
+          Date/Time: <span style={{ fontWeight: "600" }}>{data.dateTime}</span>
         </Typography>
       </Box>
       <Box>
         <Typography>
-          Telephone: <span style={{ fontWeight: "600" }}>000-000-0000</span>
+          Telephone: <span style={{ fontWeight: "600" }}>{data.telephone}</span>
         </Typography>
       </Box>
       <Box>
         <Typography>
-          User ID: <span style={{ fontWeight: "600" }}>12344321</span>
+          User ID: <span style={{ fontWeight: "600" }}>{data.userId}</span>
         </Typography>
       </Box>
     </Box>
@@ -93,7 +99,7 @@ const ExpandDetail: FunctionComponent<ExpandDetailProps> = () => {
           <li>Your transaction will be processed the following business day.</li>
           <li>It is not possible to calculate the buying power of this order.</li>
           <li>A cancellation will not be possible during business hours on market orders. You can call a representative for more information.</li>
-          <li>For the above-mentioned reason(s), your order will be processed by one of our representatives.          </li>        
+          <li>For the above-mentioned reason(s), your order will be processed by one of our representatives.</li>        
         </ul>
       </Box>
     </Box>

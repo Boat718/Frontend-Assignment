@@ -1,12 +1,7 @@
 import { FunctionComponent } from "react";
-import SearchBar from "../components/SearchBar";
 import OrdersTable from "../components/OrdersTable";
-
-interface OrdersPageProps {
-  
-}
  
-const OrdersPage: FunctionComponent<OrdersPageProps> = () => {
+const OrdersPage: FunctionComponent = () => {
   return ( <div>
     <OrdersTable />
   </div> );

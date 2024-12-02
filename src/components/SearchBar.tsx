@@ -1,10 +1,11 @@
 import { FunctionComponent,useState } from "react";
-import { Button, Box, Typography, MenuItem, colors, TextFieldProps, InputLabel, Select, SelectChangeEvent } from "@mui/material";
+import { Button, Box, Typography, MenuItem, Select, SelectChangeEvent } from "@mui/material";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import CalendarMonthOutlinedIcon from '@mui/icons-material/CalendarMonthOutlined';
 import dayjs, { Dayjs } from "dayjs";
 import sharedTextFieldProps from "../css/sharedTextFieldProps";
+import { MockData } from "../types/mockData";
 
 interface SearchBarProps {
   isMobile?: boolean;
@@ -17,14 +18,13 @@ const SearchBar: FunctionComponent<SearchBarProps> = ({ isMobile, setSearchData 
   const [endDate, setEndDate] = useState<Dayjs | null>(null);
   const [status, setStatus] = useState<string | null>("Waiting");
   const [period, setPeriod] = useState<string | null>("Transmission");
-  const [mockData, setMockData] = useState<any[]>([]);
 
   const isEndDateDisabled = (date: Dayjs) => {
     if (!startDate) return false;
-    return date.isBefore(startDate, "day"); // Disable dates before or same as start date
+    return date.isBefore(startDate, "day");
   };
 
-  const filterData = (data: any[]) => {
+  const filterData = (data: MockData[]) => {
     return data.filter((record) => {
       let isValid = true;
       if(status !== record.status) {
@@ -45,7 +45,6 @@ const SearchBar: FunctionComponent<SearchBarProps> = ({ isMobile, setSearchData 
       if (startDate && record.date && dayjs(record.date).isBefore(startDate, "day")) {
         isValid = false;
       }
-
       return isValid;
     })
   }
@@ -55,21 +54,10 @@ const SearchBar: FunctionComponent<SearchBarProps> = ({ isMobile, setSearchData 
   };
 
   const handleSearch = async () => {
-    // Fetch mock data when search is triggered
-    const response = await fetch("/mockData.json");
+    const response = await fetch("/mock_data.json");
     const data = await response.json();
-    
     const filteredData = filterData(data);
-    setMockData(filteredData);
     setSearchData(filteredData);
-    console.log("Search parameters:", {
-      from: startDate?.format("DD/MM/YYYY"),
-      to: endDate?.format("DD/MM/YYYY"),
-      status,
-      period,
-    });
-
-    console.log("Fetched mock data:", filteredData); // Log the fetched data for debugging
   };
   
 
@@ -120,7 +108,7 @@ const SearchBar: FunctionComponent<SearchBarProps> = ({ isMobile, setSearchData 
           value={startDate}
           onChange={(newValue) => setStartDate(newValue)}
           slots={{
-            openPickerIcon: CalendarMonthOutlinedIcon, // Replace the default calendar icon
+            openPickerIcon: CalendarMonthOutlinedIcon,
           }}
           slotProps={{
             textField: sharedTextFieldProps,
@@ -138,7 +126,7 @@ const SearchBar: FunctionComponent<SearchBarProps> = ({ isMobile, setSearchData 
           onChange={(newValue) => setEndDate(newValue)}
           shouldDisableDate={isEndDateDisabled}
           slots={{
-            openPickerIcon: CalendarMonthOutlinedIcon, // Replace the default calendar icon
+            openPickerIcon: CalendarMonthOutlinedIcon,
           }}
           slotProps={{
             textField: sharedTextFieldProps,
