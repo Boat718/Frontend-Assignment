@@ -45,8 +45,8 @@ Make sure you have **Node.js** installed on your machine. You can download it fr
 
 1. Clone this repository:
     ```bash
-    git clone https://github.com/your-username/orders-management-app.git
-    cd orders-management-app
+    https://github.com/Boat718/Frontend-Assignment.git
+    cd frontend-assignment
     ```
 
 2. Install the dependencies:
