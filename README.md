@@ -1,46 +1,72 @@
-# Getting Started with Create React App
+# **The requirement**
+is to create a web application with ReactJS for user to search and view orders as shown below. 
+The user can search the orders by selecting starting date and ending date. The period and status values are fixed 
+with a single value of ‘Transmission’ and ‘Waiting’ for the first MVP.  You can design the data model that should be 
+returned from the backend service and create the mocked data at frontend for the test. The UI should support 
+responsive which will display only the 4 columns of Account, Operation, Symbol and Status for mobile screen.
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## **Features**
+- **Order Table**: Displays a list of orders in a table format with the ability to sort by various columns such as account, operation, symbol, etc.
+- **Expandable Rows**: Each order row can be expanded to show additional details, such as net amount, price, exchange rate, and more.
+- **Responsive Design**: The app is fully responsive, optimizing the layout for mobile devices by reducing columns and stacking content vertically.
+- **Search Functionality**: Users can filter data based on specific criteria (e.g., status, period, date range).
 
-## Available Scripts
+## **Components**
 
-In the project directory, you can run:
+### **1. Header**
+- Displays the title and search filters for the orders.
+- Contains buttons for searching.
 
-### `npm start`
+### **2. OrdersTable**
+- Displays a list of orders in a table format.
+- Allows sorting and filtering by various columns.
+- Displays order details in a responsive table layout.
+- On clicking an order, it expands to show additional details (like net amount, exchange rate, etc.).
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+### **3. ExpandDetail**
+- Displays additional details for each order in an expandable row.
+- Shows detailed information like **net amount**, **price**, **exchange rate**, and **warnings**.
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+## **Technologies Used**
 
-### `npm test`
+- **React**: For building the user interface and components.
+- **Material-UI**: For UI components like tables, buttons, and icons.
+- **Day.js**: For date handling and comparisons.
+- **React Router**: For managing page navigation.
+- **Media Queries**: For implementing responsive design.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## **Setup Instructions**
 
-### `npm run build`
+### **Prerequisites**
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Make sure you have **Node.js** installed on your machine. You can download it from [here](https://nodejs.org/).
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+### **Installation**
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+1. Clone this repository:
+    ```bash
+    git clone https://github.com/your-username/orders-management-app.git
+    cd orders-management-app
+    ```
 
-### `npm run eject`
+2. Install the dependencies:
+    ```bash
+    npm install
+    ```
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+3. Start the development server:
+    ```bash
+    npm start
+    ```
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+    This will start the app in development mode. Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+## **How to Use**
 
-## Learn More
+1. **View Orders**: The app initially loads a table with a list of orders.
+2. **Expand Row**: Click on the arrow icon in a row to expand it and view additional details about that order.
+3. **Search Orders**: Use the search bar to filter orders based on status, period, or date range **(would recommend selecting the start date from August to December 2024, There are more datasets for Waiting status and Transmission period. However there are datasets of any status and period but need to select the right date range ).**
+4. **Responsive Design**: Resize your browser or open it on a mobile device to see the app adapt to mobile screens.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
-To learn React, check out the [React documentation](https://reactjs.org/).
